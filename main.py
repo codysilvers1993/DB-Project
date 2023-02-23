@@ -1,6 +1,13 @@
 import os
 import sqlite3
 import hashlib
+import keyboard
+import sys
+
+
+def reset_program():
+    if keyboard.add_hotkey('esc'):
+        welcome_screen()
 
 
 # SHA-256 algorithm password encoder function
@@ -55,7 +62,6 @@ def insert_username_password_into_table(username, password):
 def create_database():
     # check if the database file already exists and if so will print statement
     if os.path.exists('user_data.db'):
-
         return
     # create a connection to the database
     conn = sqlite3.connect('user_data.db')
@@ -136,6 +142,42 @@ def login():
     conn.close()
 
 
+def insert_data():
+    conn = sqlite3.connect('user_data_admin.db')
+    cursor = conn.cursor()
+
+    admin_username = input("Enter Your Admin Username: ")
+    admin_password = input("Enter Your Admin Password: ")
+
+    cursor.execute("SELECT admin_password FROM userDataAdmin WHERE admin_username = ?", (admin_username,))
+    admin = cursor.fetchone()
+
+    if admin:
+        if admin_password == admin[0]:
+            conn2 = sqlite3.connect("user_data.db")
+            cursor2 = conn2.cursor()
+            print_database_data_rows()
+
+            # prompt admin to enter user details
+            username = input("Enter username of User You Want To Insert: ")
+            password = input("Enter user password: ")
+
+            # insert user details into the database
+            cursor2.execute("INSERT INTO userDataCreds (username, password) VALUES (?, ?)",
+                            (username, password))
+            print("User inserted successfully.")
+            conn2.commit()
+            conn2.close()
+        else:
+            print("Incorrect admin password. Please try again.")
+
+    else:
+        print("Admin not found. Please try again.")
+
+    conn.commit()
+    conn.close()
+
+
 def delete_data():
     conn = sqlite3.connect('user_data_admin.db')
     cursor = conn.cursor()
@@ -167,19 +209,35 @@ def delete_data():
     conn.commit()
     conn.close()
 
+
 # general welcome screen
 def welcome_screen():
-    print("===================================")
-    print("|     == Secure Database ==       |")
-    print("===================================\n")
-    print("Type 1 to register, type 2 to login, or type 3 to delete data\n")
-    choice = input("Enter your choice: ")
+    print("                            ====================================")
+    print("                            |     == Secure Database ==        |")
+    print("                            ====================================\n")
+    print("""\
+                                           ._ o o
+                                           \_`-)|_
+                                        ,""       \ 
+                                      ,"  ## |   ಠ ಠ. 
+                                    ," ##   ,-\__    `.
+                                  ,"       /     `--._;)
+                                ,"     ## /
+                              ,"   ##    /
+                        """)
+    print( "Type 1 to register, type 2 to login, type 3 to delete data, type 4 to insert data, and type 5 to reset application")
+
+    choice = input("Enter Your Choice: ")
     if choice == "1":
         register()
     elif choice == "2":
         login()
     elif choice == "3":
         delete_data()
+    elif choice == "4":
+        insert_data()
+    elif choice == "5":
+        welcome_screen()
     else:
         print("Invalid choice.")
 
