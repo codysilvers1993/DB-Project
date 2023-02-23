@@ -119,17 +119,30 @@ def login():
     conn.close()
 
 
+def delete_data():
+    conn = sqlite3.connect('user_data.db')
+    cursor = conn.cursor()
+    username = input("Enter The Username To Delete: ")
+    password = input("Enter The Password To Delete: ")
+    cursor.execute("DELETE FROM userDataCreds WHERE username = ?", (username,))
+    cursor.execute("DELETE FROM userDataCreds WHERE password = ?", (password,))
+    conn.commit()
+    conn.close
+
+
 # general welcome screen
 def welcome_screen():
     print("===================================")
     print("|     == Secure Database ==     |")
-    print("===================================")
-    print("Type 1 to register, or type 2 to login\n")
+    print("===================================\n")
+    print("Type 1 to register, type 2 to login, or type 3 to login\n")
     choice = input("Enter your choice: ")
     if choice == "1":
         register()
     elif choice == "2":
         login()
+    elif choice == "3":
+        delete_data()
     else:
         print("Invalid choice.")
 
