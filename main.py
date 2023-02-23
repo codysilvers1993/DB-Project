@@ -132,7 +132,7 @@ def login():
             print("Invalid password.")
     else:
         print("User not found.")
-    # Close the connecti
+    # Close the connection
     conn.close()
 
 
