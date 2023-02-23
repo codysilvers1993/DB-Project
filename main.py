@@ -117,6 +117,7 @@ def register():
     hashed_password = hash_password(password)
     insert_username_password_into_table(username, hashed_password)
     print("Registration Successful")
+    welcome_screen()
 
 
 # "login" user and check if hashed password matches user info
@@ -210,6 +211,27 @@ def delete_data():
     conn.close()
 
 
+def verify_admin_for_displaying_data():
+    conn = sqlite3.connect('user_data_admin.db')
+    cursor = conn.cursor()
+
+    admin_username = input("Enter Your Admin Username: ")
+    admin_password = input("Enter Your Admin Password: ")
+
+    cursor.execute("SELECT admin_password FROM userDataAdmin WHERE admin_username = ?", (admin_username,))
+    admin = cursor.fetchone()
+
+    if admin:
+        if admin_password == admin[0]:
+            conn2 = sqlite3.connect("user_data.db")
+            cursor2 = conn2.cursor()
+            print_database_data_rows()
+        else:
+            print("Incorrect admin password. Please try again.")
+    else:
+        print("Admin not found. Please try again.")
+
+
 # general welcome screen
 def welcome_screen():
     print("                            ====================================")
@@ -225,7 +247,7 @@ def welcome_screen():
                                 ,"     ## /
                               ,"   ##    /
                         """)
-    print( "Type 1 to register, type 2 to login, type 3 to delete data, type 4 to insert data, and type 5 to reset application")
+    print("Type 1 to register, type 2 to login, type 3 to delete data, type 4 to insert data, or type 5 print users")
 
     choice = input("Enter Your Choice: ")
     if choice == "1":
@@ -237,7 +259,17 @@ def welcome_screen():
     elif choice == "4":
         insert_data()
     elif choice == "5":
-        welcome_screen()
+        verify_admin_for_displaying_data()
+        while True:
+            choice = input("Do you want to go back to main screen? (y/n): ")
+            if choice == "y":
+                welcome_screen()
+                break
+            elif choice == "n":
+                print("Database Closed")
+                sys.exit()  # exit the program
+            else:
+                print("Invalid entry. Please enter 'y' or 'n'.")
     else:
         print("Invalid choice.")
 
@@ -246,4 +278,3 @@ if __name__ == '__main__':
     create_database()
     create_database_admin()
     welcome_screen()
-
