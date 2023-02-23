@@ -77,7 +77,7 @@ def create_database_admin():
         return
     # create a connection to the database
     conn = sqlite3.connect('user_data_admin.db')
-    # create a cursor object to execute SQL commands
+    # create a cursor object to execute SQL command
     c = conn.cursor()
     # create a table to store user credentials
     c.execute('''CREATE TABLE userDataAdmin 
