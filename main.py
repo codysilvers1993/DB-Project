@@ -55,7 +55,7 @@ def insert_username_password_into_table(username, password):
 def create_database():
     # check if the database file already exists and if so will print statement
     if os.path.exists('user_data.db'):
-        print("Database File Already Exists\n")
+
         return
     # create a connection to the database
     conn = sqlite3.connect('user_data.db')
@@ -73,7 +73,6 @@ def create_database():
 def create_database_admin():
     # check if the database file already exists and if so will print statement
     if os.path.exists('user_data_admin.db'):
-        print("Database File Already Exists\n")
         return
     # create a connection to the database
     conn = sqlite3.connect('user_data_admin.db')
@@ -140,14 +139,38 @@ def login():
 def delete_data():
     conn = sqlite3.connect('user_data_admin.db')
     cursor = conn.cursor()
-    username = input("Enter Your Admin Username: ")
-    password = input("Enter Your Admin Password: ")
 
+    admin_username = input("Enter Your Admin Username: ")
+    admin_password = input("Enter Your Admin Password: ")
+
+    cursor.execute("SELECT admin_password FROM userDataAdmin WHERE admin_username = ?", (admin_username,))
+    admin = cursor.fetchone()
+
+    if admin:
+        if admin_password == admin[0]:
+            conn2 = sqlite3.connect("user_data.db")
+            cursor2 = conn2.cursor()
+            print_database_data_rows()
+
+            user_id_to_delete = input("Enter username of User You Want To Delete: ")
+            cursor2.execute("DELETE FROM userDataCreds WHERE username = ?", (user_id_to_delete,))
+
+            print("Username Deleted or Username Doesnt Exist")
+            conn2.commit()
+            conn2.close()
+        else:
+            print("Incorrect admin password. Please try again.")
+
+    else:
+        print("Admin not found. Please try again.")
+
+    conn.commit()
+    conn.close()
 
 # general welcome screen
 def welcome_screen():
     print("===================================")
-    print("|     == Secure Database ==     |")
+    print("|     == Secure Database ==       |")
     print("===================================\n")
     print("Type 1 to register, type 2 to login, or type 3 to delete data\n")
     choice = input("Enter your choice: ")
@@ -165,4 +188,4 @@ if __name__ == '__main__':
     create_database()
     create_database_admin()
     welcome_screen()
-    print_database_data_rows()
+
