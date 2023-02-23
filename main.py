@@ -70,6 +70,24 @@ def create_database():
     conn.close()
 
 
+def create_database_admin():
+    # check if the database file already exists and if so will print statement
+    if os.path.exists('user_data_admin.db'):
+        print("Database File Already Exists\n")
+        return
+    # create a connection to the database
+    conn = sqlite3.connect('user_data_admin.db')
+    # create a cursor object to execute SQL commands
+    c = conn.cursor()
+    # create a table to store user credentials
+    c.execute('''CREATE TABLE userDataAdmin 
+                     (admin_username TEXT, admin_password TEXT)''')
+    # commit the changes to the database
+    conn.commit()
+    # close the connection
+    conn.close()
+
+
 # print ALL database info function
 def print_database_data_rows():
     # create a connection to the database
@@ -123,9 +141,7 @@ def delete_data():
     conn = sqlite3.connect('user_data.db')
     cursor = conn.cursor()
     username = input("Enter The Username To Delete: ")
-    password = input("Enter The Password To Delete: ")
     cursor.execute("DELETE FROM userDataCreds WHERE username = ?", (username,))
-    cursor.execute("DELETE FROM userDataCreds WHERE password = ?", (password,))
     conn.commit()
     conn.close
 
@@ -135,7 +151,7 @@ def welcome_screen():
     print("===================================")
     print("|     == Secure Database ==     |")
     print("===================================\n")
-    print("Type 1 to register, type 2 to login, or type 3 to login\n")
+    print("Type 1 to register, type 2 to login, or type 3 to delete data\n")
     choice = input("Enter your choice: ")
     if choice == "1":
         register()
@@ -149,5 +165,6 @@ def welcome_screen():
 
 if __name__ == '__main__':
     create_database()
+    create_database_admin()
     welcome_screen()
     print_database_data_rows()
