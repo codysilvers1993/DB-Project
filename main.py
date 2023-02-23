@@ -105,7 +105,7 @@ def print_database_data_rows():
     conn.close()
 
 
-# Register User
+# Register Use
 def register():
     username = get_username()
     password = get_password()
