@@ -1,13 +1,7 @@
 import os
 import sqlite3
 import hashlib
-import keyboard
 import sys
-
-
-def reset_program():
-    if keyboard.add_hotkey('esc'):
-        welcome_screen()
 
 
 # SHA-256 algorithm password encoder function
@@ -169,6 +163,7 @@ def insert_data():
             print("User inserted successfully.")
             conn2.commit()
             conn2.close()
+
         else:
             print("Incorrect admin password. Please try again.")
 
@@ -203,10 +198,8 @@ def delete_data():
             conn2.close()
         else:
             print("Incorrect admin password. Please try again.")
-
     else:
         print("Admin not found. Please try again.")
-
     conn.commit()
     conn.close()
 
