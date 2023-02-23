@@ -2,14 +2,18 @@ import os
 import sqlite3
 import hashlib
 
+
 # SHA-256 algorithm password encoder function
 def hash_password(password):
     # encode the password as UTF-8
     password_bytes = password.encode('utf-8')
-    # hash the password using SHA-256
-    hash_bytes = hashlib.sha256(password_bytes)
-    # convert the hash value to a hexadecimal string
-    hash_str = hash_bytes.hexdigest()
+
+    # hash the salted password using SHA-256
+    hash_bytes = hashlib.sha256(password_bytes).digest()
+    # convert the hash value and salt to hexadecimal strings
+    hash_str = hash_bytes.hex()
+    # concatenate the salt and hash strings
+
     return hash_str
 
 
@@ -51,7 +55,7 @@ def insert_username_password_into_table(username, password):
 def create_database():
     # check if the database file already exists and if so will print statement
     if os.path.exists('user_data.db'):
-        print("Database file already exists")
+        print("Database File Already Exists\n")
         return
     # create a connection to the database
     conn = sqlite3.connect('user_data.db')
@@ -83,15 +87,54 @@ def print_database_data_rows():
     conn.close()
 
 
-if __name__ == '__main__':
-    # returns strings from get_username and get_password
+# Register User
+def register():
     username = get_username()
     password = get_password()
-    # passes password through hasher to return hashed password
-    password = hash_password(password)
+    hashed_password = hash_password(password)
+    insert_username_password_into_table(username, hashed_password)
+    print("Registration Successful")
 
-    # function to initialize database and insert password and username into rows with columns named, username/password
+
+# "login" user and check if hashed password matches user info
+def login():
+    conn = sqlite3.connect('user_data.db')
+    cursor = conn.cursor()
+    username = input("Enter your username: ")
+    password = input("Enter your password: ")
+    cursor.execute("SELECT password FROM userDataCreds WHERE username = ?", (username,))
+    result = cursor.fetchone()
+    # Check if the username exists in the user database
+    if result is not None:
+        # Get the hashed password for this user
+        hashed_password = result[0]
+        # Hash the user input using the same algorithm and compare
+        if hash_password(password) == hashed_password:
+            print("Login successful!")
+        else:
+            print("Invalid password.")
+    else:
+        print("User not found.")
+    # Close the connection
+    conn.close()
+
+
+# general welcome screen
+def welcome_screen():
+    print("===================================")
+    print("|     == Secure Database ==     |")
+    print("===================================")
+    print("Type 1 to register, or type 2 to login\n")
+    choice = input("Enter your choice: ")
+    if choice == "1":
+        register()
+    elif choice == "2":
+        login()
+    else:
+        print("Invalid choice.")
+
+
+if __name__ == '__main__':
     create_database()
-    insert_username_password_into_table(username, password)
-    # prints database info for testing
+    welcome_screen()
     print_database_data_rows()
