@@ -138,12 +138,10 @@ def login():
 
 
 def delete_data():
-    conn = sqlite3.connect('user_data.db')
+    conn = sqlite3.connect('user_data_admin.db')
     cursor = conn.cursor()
-    username = input("Enter The Username To Delete: ")
-    cursor.execute("DELETE FROM userDataCreds WHERE username = ?", (username,))
-    conn.commit()
-    conn.close
+    username = input("Enter Your Admin Username: ")
+    password = input("Enter Your Admin Password: ")
 
 
 # general welcome screen
