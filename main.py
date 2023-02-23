@@ -8,15 +8,15 @@ import sys
 def hash_password(password):
     # encode the password as UTF-8
     password_bytes = password.encode('utf-8')
-
     # hash the salted password using SHA-256
     hash_bytes = hashlib.sha256(password_bytes).digest()
     # convert the hash value and salt to hexadecimal strings
     hash_str = hash_bytes.hex()
     # concatenate the salt and hash strings
-
     return hash_str
 
+
+# ===========================Getter Functions==================================
 
 # prompt and get username function
 def get_username():
@@ -38,6 +38,8 @@ def get_password():
             print("Password cannot be blank. Please try again.")
 
 
+# ===========================================================================
+
 # insert username and password into database table function.
 def insert_username_password_into_table(username, password):
     # create a connection to the database
@@ -52,7 +54,7 @@ def insert_username_password_into_table(username, password):
     conn.close()
 
 
-# create database function
+# ===========================Create Regular User/Admin Necessary Database Functions===================
 def create_database():
     # check if the database file already exists and if so will print statement
     if os.path.exists('user_data.db'):
@@ -85,7 +87,7 @@ def create_database_admin():
     conn.commit()
     # close the connection
     conn.close()
-
+# ========================================================================================
 
 # print ALL database info function
 def print_database_data_rows():
@@ -111,7 +113,16 @@ def register():
     hashed_password = hash_password(password)
     insert_username_password_into_table(username, hashed_password)
     print("Registration Successful")
-    welcome_screen()
+    while True:
+        choice = input("Do you want to go back to main screen? (y/n): ")
+        if choice == "y":
+            welcome_screen()
+            break
+        elif choice == "n":
+            print("Database Closed")
+            sys.exit()  # exit the program
+        else:
+            print("Invalid entry. Please enter 'y' or 'n'.")
 
 
 # "login" user and check if hashed password matches user info
@@ -129,10 +140,40 @@ def login():
         # Hash the user input using the same algorithm and compare
         if hash_password(password) == hashed_password:
             print("Login successful!")
+            while True:
+                choice = input("Do you want to go back to main screen? (y/n): ")
+                if choice == "y":
+                    welcome_screen()
+                    break
+                elif choice == "n":
+                    print("Database Closed")
+                    sys.exit()  # exit the program
+                else:
+                    print("Invalid entry. Please enter 'y' or 'n'.")
         else:
             print("Invalid password.")
+            while True:
+                choice = input("Do you want to go back to main screen? (y/n): ")
+                if choice == "y":
+                    welcome_screen()
+                    break
+                elif choice == "n":
+                    print("Database Closed")
+                    sys.exit()  # exit the program
+                else:
+                    print("Invalid entry. Please enter 'y' or 'n'.")
     else:
         print("User not found.")
+        while True:
+            choice = input("Do you want to go back to main screen? (y/n): ")
+            if choice == "y":
+                welcome_screen()
+                break
+            elif choice == "n":
+                print("Database Closed")
+                sys.exit()  # exit the program
+            else:
+                print("Invalid entry. Please enter 'y' or 'n'.")
     # Close the connection
     conn.close()
 
@@ -196,12 +237,43 @@ def delete_data():
             print("Username Deleted or Username Doesnt Exist")
             conn2.commit()
             conn2.close()
+            while True:
+                choice = input("Do you want to go back to main screen? (y/n): ")
+                if choice == "y":
+                    welcome_screen()
+                    break
+                elif choice == "n":
+                    print("Database Closed")
+                    sys.exit()  # exit the program
+                else:
+                    print("Invalid entry. Please enter 'y' or 'n'.")
+
         else:
             print("Incorrect admin password. Please try again.")
+            while True:
+                choice = input("Do you want to go back to main screen? (y/n): ")
+                if choice == "y":
+                    welcome_screen()
+                    break
+                elif choice == "n":
+                    print("Database Closed")
+                    sys.exit()  # exit the program
+                else:
+                    print("Invalid entry. Please enter 'y' or 'n'.")
     else:
         print("Admin not found. Please try again.")
     conn.commit()
     conn.close()
+    while True:
+        choice = input("Do you want to go back to main screen? (y/n): ")
+        if choice == "y":
+            welcome_screen()
+            break
+        elif choice == "n":
+            print("Database Closed")
+            sys.exit()  # exit the program
+        else:
+            print("Invalid entry. Please enter 'y' or 'n'.")
 
 
 def verify_admin_for_displaying_data():
@@ -219,10 +291,46 @@ def verify_admin_for_displaying_data():
             conn2 = sqlite3.connect("user_data.db")
             cursor2 = conn2.cursor()
             print_database_data_rows()
+            conn.commit()
+            conn.close()
+            while True:
+                choice = input("Do you want to go back to main screen? (y/n): ")
+                if choice == "y":
+                    welcome_screen()
+                    break
+                elif choice == "n":
+                    print("Database Closed")
+                    sys.exit()  # exit the program
+                else:
+                    print("Invalid entry. Please enter 'y' or 'n'.")
         else:
             print("Incorrect admin password. Please try again.")
+            conn.commit()
+            conn.close()
+            while True:
+                choice = input("Do you want to go back to main screen? (y/n): ")
+                if choice == "y":
+                    welcome_screen()
+                    break
+                elif choice == "n":
+                    print("Database Closed")
+                    sys.exit()  # exit the program
+                else:
+                    print("Invalid entry. Please enter 'y' or 'n'.")
     else:
         print("Admin not found. Please try again.")
+        conn.commit()
+        conn.close()
+        while True:
+            choice = input("Do you want to go back to main screen? (y/n): ")
+            if choice == "y":
+                welcome_screen()
+                break
+            elif choice == "n":
+                print("Database Closed")
+                sys.exit()  # exit the program
+            else:
+                print("Invalid entry. Please enter 'y' or 'n'.")
 
 
 # general welcome screen
@@ -240,9 +348,10 @@ def welcome_screen():
                                 ,"     ## /
                               ,"   ##    /
                         """)
-    print("Type 1 to register, type 2 to login, type 3 to delete data, type 4 to insert data, or type 5 print users")
+    print("Type 1 to register user\nType 2 to login user\nType 3 "
+          "to delete user data\nType 4 to insert user data\nType 5 print user information")
 
-    choice = input("Enter Your Choice: ")
+    choice = input("\nEnter Your Choice: ")
     if choice == "1":
         register()
     elif choice == "2":
