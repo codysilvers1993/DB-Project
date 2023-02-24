@@ -2,6 +2,7 @@ import os
 import sqlite3
 import hashlib
 import sys
+import time
 
 
 # SHA-256 algorithm password encoder function
@@ -344,10 +345,24 @@ def verify_admin_for_displaying_data():
                 print("Invalid entry. Please enter 'y' or 'n'.")
 
 
+def clear_console():
+    print(" :: Booting System ::")
+    time.sleep(1)
+    os.system('cls' if os.name == 'nt' else 'clear')
+    time.sleep(1)
+    print(":: Getting The Database Elves Ready...... ::")
+    time.sleep(2)
+    os.system('cls' if os.name == 'nt' else 'clear')
+    print(":: System Booted   ::")
+    time.sleep(1)
+
+
+
 # general welcome screen
 def welcome_screen():
+    clear_console()
     print("                            ====================================")
-    print("                            |     == Secure Database ==        |")
+    print("                            | == Long-Neck Customer Database == |")
     print("                            ====================================\n")
     print("""\
                                            ._ o o
@@ -359,6 +374,9 @@ def welcome_screen():
                                 ,"     ## /
                               ,"   ##    /
                         """)
+
+    print("=== Welcome to Our Award-Winning Secure Database For Hosting User Information === \n"
+          "\nPlease Select Any Option [1-5]\n")
     print("Type 1 to register user\nType 2 to login user\nType 3 "
           "to delete user data\nType 4 to insert user data\nType 5 print user information")
 
