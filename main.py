@@ -370,7 +370,7 @@ def clear_console():
 def welcome_screen():
     clear_console()
     print("                            ====================================")
-    print("                            | == Long-Neck Customer Database == |")
+    print("                            | == Secure Customer Database ==   |")
     print("                            ====================================\n")
     print("""\
                                            ._ o o
@@ -415,7 +415,7 @@ def welcome_screen():
 
 def welcome_screen_without_clear_console():
     print("                            ====================================")
-    print("                            | == Long-Neck Customer Database == |")
+    print("                            | == Secure Customer Database ==   |")
     print("                            ====================================\n")
     print("""\
                                                    ._ o o
