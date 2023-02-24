@@ -18,7 +18,6 @@ def hash_password(password):
 
 # ===========================Getter Functions==================================
 
-# prompt and get username function
 def get_username():
     while True:
         username = input("Enter Your Username: ")
@@ -28,7 +27,6 @@ def get_username():
             print("Username cannot be blank. Please try again.")
 
 
-# prompt and get password function
 def get_password():
     while True:
         password = input("Enter Your Password: ")
@@ -87,6 +85,8 @@ def create_database_admin():
     conn.commit()
     # close the connection
     conn.close()
+
+
 # ========================================================================================
 
 # print ALL database info function
@@ -103,6 +103,7 @@ def print_database_data_rows():
     for row in rows:
         print(row)
     # close the connection
+    conn.commit
     conn.close()
 
 
@@ -122,7 +123,17 @@ def register():
             print("Database Closed")
             sys.exit()  # exit the program
         else:
-            print("Invalid entry. Please enter 'y' or 'n'.")
+            print("\nInvalid entry. Please enter 'y' or 'n'.")
+            while True:
+                choice = input("Do you want to go back to main screen? (y/n): ")
+                if choice == "y":
+                    welcome_screen()
+                    break
+                elif choice == "n":
+                    print("Database Closed")
+                    sys.exit()  # exit the program
+                else:
+                    print("Invalid entry. Please enter 'y' or 'n'.")
 
 
 # "login" user and check if hashed password matches user info
