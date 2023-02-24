@@ -3,7 +3,9 @@ import sqlite3
 import hashlib
 import sys
 import time
+from time import sleep
 
+os.system("mode con: cols=200 lines=50")
 
 # SHA-256 algorithm password encoder function
 def hash_password(password):
@@ -208,8 +210,8 @@ def insert_data():
             print_database_data_rows()
 
             # prompt admin to enter user details
-            username = input("Enter username of User You Want To Insert: ")
-            password = input("Enter user password: ")
+            username = input("Enter Username of User You Want To Insert: ")
+            password = input("Enter password of User You Want To Insert:  ")
 
             # insert user details into the database
             cursor2.execute("INSERT INTO userDataCreds (username, password) VALUES (?, ?)",
@@ -354,6 +356,7 @@ def verify_admin_for_displaying_data():
                 sys.exit()
 
 
+# general welcome screen
 def clear_console():
     print(" :: Booting System ::")
     time.sleep(1)
@@ -364,9 +367,15 @@ def clear_console():
     os.system('cls' if os.name == 'nt' else 'clear')
     print(":: System Booted   ::")
     time.sleep(1)
+    os.system('cls' if os.name == 'nt' else 'clear')
+    time.sleep(1)
 
 
-# general welcome screen
+def print_new_lines():
+    sys.setrecursionlimit(10000)
+    print("\n" * 100)
+
+
 def welcome_screen():
     clear_console()
     print("                            ====================================")
@@ -386,7 +395,7 @@ def welcome_screen():
     print("=== Welcome to Our Award-Winning Secure Database For Hosting User Information === \n"
           "\nPlease Select Any Option [1-5]\n")
     print("Type 1 to register user\nType 2 to login user\nType 3 "
-          "to delete user data\nType 4 to insert user data\nType 5 print user information")
+          "to delete user data\nType 4 to insert user data\nType 5 to print user information")
 
     choice = input("\nEnter Your Choice: ")
     if choice == "1":
@@ -414,6 +423,8 @@ def welcome_screen():
 
 
 def welcome_screen_without_clear_console():
+    # clear_console()
+    print_new_lines()
     print("                            ====================================")
     print("                            | == Secure Customer Database ==   |")
     print("                            ====================================\n")
@@ -431,7 +442,7 @@ def welcome_screen_without_clear_console():
     print("=== Welcome to Our Award-Winning Secure Database For Hosting User Information === \n"
           "\nPlease Select Any Option [1-5]\n")
     print("Type 1 to register user\nType 2 to login user\nType 3 "
-          "to delete user data\nType 4 to insert user data\nType 5 print user information")
+          "to delete user data\nType 4 to insert user data\nType 5 to print user information")
 
     choice = input("\nEnter Your Choice: ")
     if choice == "1":
