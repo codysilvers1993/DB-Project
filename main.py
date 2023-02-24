@@ -118,7 +118,7 @@ def register():
     while True:
         choice = input("Do you want to go back to main screen? (y/n): ")
         if choice == "y":
-            welcome_screen()
+            welcome_screen_without_clear_console()
             break
         elif choice == "n":
             print("Database Closed")
@@ -128,7 +128,7 @@ def register():
             while True:
                 choice = input("Do you want to go back to main screen? (y/n): ")
                 if choice == "y":
-                    welcome_screen()
+                    welcome_screen_without_clear_console()
                     break
                 elif choice == "n":
                     print("Database Closed")
@@ -155,7 +155,7 @@ def login():
             while True:
                 choice = input("Do you want to go back to main screen? (y/n): ")
                 if choice == "y":
-                    welcome_screen()
+                    welcome_screen_without_clear_console()
                     break
                 elif choice == "n":
                     print("Database Closed")
@@ -167,7 +167,7 @@ def login():
             while True:
                 choice = input("Do you want to go back to main screen? (y/n): ")
                 if choice == "y":
-                    welcome_screen()
+                    welcome_screen_without_clear_console()
                     break
                 elif choice == "n":
                     print("Database Closed")
@@ -179,13 +179,14 @@ def login():
         while True:
             choice = input("Do you want to go back to main screen? (y/n): ")
             if choice == "y":
-                welcome_screen()
+                welcome_screen_without_clear_console()
                 break
             elif choice == "n":
                 print("Database Closed")
                 sys.exit()  # exit the program
             else:
                 print("Invalid entry. Please enter 'y' or 'n'.")
+                sys.exit()
     # Close the connection
     conn.close()
 
@@ -219,9 +220,11 @@ def insert_data():
 
         else:
             print("Incorrect admin password. Please try again.")
+            sys.exit()
 
     else:
         print("Admin not found. Please try again.")
+        sys.exit()
 
     conn.commit()
     conn.close()
@@ -252,26 +255,28 @@ def delete_data():
             while True:
                 choice = input("Do you want to go back to main screen? (y/n): ")
                 if choice == "y":
-                    welcome_screen()
+                    welcome_screen_without_clear_console()
                     break
                 elif choice == "n":
                     print("Database Closed")
                     sys.exit()  # exit the program
                 else:
                     print("Invalid entry. Please enter 'y' or 'n'.")
+                    sys.exit()
 
         else:
             print("Incorrect admin password. Please try again.")
             while True:
                 choice = input("Do you want to go back to main screen? (y/n): ")
                 if choice == "y":
-                    welcome_screen()
+                    welcome_screen_without_clear_console()
                     break
                 elif choice == "n":
                     print("Database Closed")
                     sys.exit()  # exit the program
                 else:
                     print("Invalid entry. Please enter 'y' or 'n'.")
+                    sys.exit()
     else:
         print("Admin not found. Please try again.")
     conn.commit()
@@ -279,13 +284,14 @@ def delete_data():
     while True:
         choice = input("Do you want to go back to main screen? (y/n): ")
         if choice == "y":
-            welcome_screen()
+            welcome_screen_without_clear_console()
             break
         elif choice == "n":
             print("Database Closed")
             sys.exit()  # exit the program
         else:
             print("Invalid entry. Please enter 'y' or 'n'.")
+            sys.exit()
 
 
 def verify_admin_for_displaying_data():
@@ -308,13 +314,14 @@ def verify_admin_for_displaying_data():
             while True:
                 choice = input("Do you want to go back to main screen? (y/n): ")
                 if choice == "y":
-                    welcome_screen()
+                    welcome_screen_without_clear_console()
                     break
                 elif choice == "n":
                     print("Database Closed")
                     sys.exit()  # exit the program
                 else:
                     print("Invalid entry. Please enter 'y' or 'n'.")
+                    sys.exit()
         else:
             print("Incorrect admin password. Please try again.")
             conn.commit()
@@ -322,13 +329,14 @@ def verify_admin_for_displaying_data():
             while True:
                 choice = input("Do you want to go back to main screen? (y/n): ")
                 if choice == "y":
-                    welcome_screen()
+                    welcome_screen_without_clear_console()
                     break
                 elif choice == "n":
                     print("Database Closed")
                     sys.exit()  # exit the program
                 else:
                     print("Invalid entry. Please enter 'y' or 'n'.")
+                    sys.exit()
     else:
         print("Admin not found. Please try again.")
         conn.commit()
@@ -336,13 +344,14 @@ def verify_admin_for_displaying_data():
         while True:
             choice = input("Do you want to go back to main screen? (y/n): ")
             if choice == "y":
-                welcome_screen()
+                welcome_screen_without_clear_console()
                 break
             elif choice == "n":
                 print("Database Closed")
                 sys.exit()  # exit the program
             else:
                 print("Invalid entry. Please enter 'y' or 'n'.")
+                sys.exit()
 
 
 def clear_console():
@@ -355,7 +364,6 @@ def clear_console():
     os.system('cls' if os.name == 'nt' else 'clear')
     print(":: System Booted   ::")
     time.sleep(1)
-
 
 
 # general welcome screen
@@ -374,6 +382,51 @@ def welcome_screen():
                                 ,"     ## /
                               ,"   ##    /
                         """)
+
+    print("=== Welcome to Our Award-Winning Secure Database For Hosting User Information === \n"
+          "\nPlease Select Any Option [1-5]\n")
+    print("Type 1 to register user\nType 2 to login user\nType 3 "
+          "to delete user data\nType 4 to insert user data\nType 5 print user information")
+
+    choice = input("\nEnter Your Choice: ")
+    if choice == "1":
+        register()
+    elif choice == "2":
+        login()
+    elif choice == "3":
+        delete_data()
+    elif choice == "4":
+        insert_data()
+    elif choice == "5":
+        verify_admin_for_displaying_data()
+        while True:
+            choice = input("Do you want to go back to main screen? (y/n): ")
+            if choice == "y":
+                welcome_screen()
+                break
+            elif choice == "n":
+                print("Database Closed")
+                sys.exit()  # exit the program
+            else:
+                print("Invalid entry. Please enter 'y' or 'n'.")
+    else:
+        print("Invalid choice.")
+
+
+def welcome_screen_without_clear_console():
+    print("                            ====================================")
+    print("                            | == Long-Neck Customer Database == |")
+    print("                            ====================================\n")
+    print("""\
+                                                   ._ o o
+                                                   \_`-)|_
+                                                ,""       \ 
+                                              ,"  ## |   ಠ ಠ. 
+                                            ," ##   ,-\__    `.
+                                          ,"       /     `--._;)
+                                        ,"     ## /
+                                      ,"   ##    /
+                                """)
 
     print("=== Welcome to Our Award-Winning Secure Database For Hosting User Information === \n"
           "\nPlease Select Any Option [1-5]\n")
